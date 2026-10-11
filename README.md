@@ -30,6 +30,10 @@ Before any camera image is permitted to inform job-site risk:
 - Past hazard observations are visually quarantined and designated **HISTORICAL** with exact timestamps, preventing operators from mistaking past observations for current conditions.
 - Actionable alerts are dispatched explaining *what happened*, *why the feed cannot be trusted*, *that current site risk is UNKNOWN*, and *recommending physical inspection*.
 
+### Intended Users & Safety Outcome
+- **Intended Users:** Construction site safety supervisors, HSE (Health, Safety & Environment) managers, and surveillance console operators responsible for verified job-site compliance.
+- **Final Safety Outcome:** Eliminates the "silent safety" fallacy by strictly preventing any unverified, stale, duplicate, or offline feed from presenting a false green "SAFE" status. Unverified feeds strictly lock current site risk to **`UNKNOWN`** and trigger immediate physical inspection mandates.
+
 ---
 
 ## 3. Key Features
@@ -99,15 +103,22 @@ Before any camera image is permitted to inform job-site risk:
 
 ---
 
-## 5. Technology Stack
+## 5. Technologies and AI Tools Used
 
-- **Markup:** Semantic HTML5 (`<header>`, `<aside>`, `<main>`, `<video>`, `<canvas>`, ARIA landmarks)
-- **Styling:** Vanilla CSS3 Design System (Industrial navy palette, responsive CSS Grid, Flexbox, accessible status badges)
-- **Application Logic:** Vanilla JavaScript ES6+ (WebRTC `getUserMedia`, Canvas 2D API, reactive state management)
-- **Testing:** Node.js `vm` sandbox acceptance test runner with media and canvas mocks
+### A. Technologies Used to Build & Run SmartSight
+- **Markup & Layout:** Semantic HTML5 (`<header>`, `<aside>`, `<main>`, `<video>`, `<canvas>`, ARIA landmarks)
+- **Styling:** Vanilla CSS3 Design System (Industrial navy palette, responsive CSS Grid, Flexbox, accessible status badges, glassmorphic HUDs)
+- **Application Logic:** Vanilla JavaScript ES6+ (WebRTC `navigator.mediaDevices.getUserMedia`, Canvas 2D API, reactive `localStorage` state management)
+- **Testing:** Node.js `vm` sandbox acceptance test runner with media and canvas mocks (`node test_smartsight.js`)
+- **Version Control & Repository:** Git & Public GitHub repository ([https://github.com/sahana-srinivasan-15/SmartSight](https://github.com/sahana-srinivasan-15/SmartSight))
 - **Icons:** Lucide Icons (CDN with SVG fallbacks)
-- **AI & Engineering Tools Used:** Google Antigravity IDE with Gemini model assistance (used as pair-programming and test architecture review assistant during development; runtime surveillance reliability is powered by client-side zero-trust algorithms without external black-box models)
-- **Project Documentation & Logs:** [BUILD_LOG.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/BUILD_LOG.md) (Build & Decision Log) and [feedback/FEEDBACK.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/feedback/FEEDBACK.md) (Challenge 2 Peer Feedback & Iteration Record)
+- **Documentation & Audit Logs:** [BUILD_LOG.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/BUILD_LOG.md) (Build & Decision Log) and [feedback/FEEDBACK.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/feedback/FEEDBACK.md) (Peer Feedback & Iteration Record)
+
+### B. AI Tools Used to Assist Development
+- **Google Antigravity IDE & Gemini Model Assistance:** Used exclusively during hackathon development as an engineering pair-programming assistant, for generating automated test suites (`test_smartsight.js`), and for reviewing architecture documentation.
+
+### C. AI/ML Models Integrated into the Application
+- **None (Decoupled Zero-Trust Architecture):** SmartSight intentionally does **NOT** run unverified black-box neural networks for automated hazard detection on live webcam streams. Automated AI hazard detection is explicitly labeled **"Not implemented (Simulation only)"** with confidence **"N/A"** to prevent misleading safety supervisors. Feed freshness, duplicate detection, and fail-safe `UNKNOWN` risk transitions are computed via deterministic, client-side zero-trust algorithms.
 
 ---
 
@@ -116,8 +127,9 @@ Before any camera image is permitted to inform job-site risk:
 SmartSight is completely frontend-based and requires no build tools, npm installs, or backend servers.
 
 ### Deployment Status & Live Demo
-- **Live Deployment URL:** No external cloud deployment URL is hosted (SmartSight is intentionally engineered for 100% in-browser client execution to maintain total worker data privacy).
+- **Public Live Deployment Status:** No public live deployment currently available (SmartSight is intentionally engineered for 100% in-browser client execution to maintain total worker data privacy).
 - **Public GitHub Repository:** [https://github.com/sahana-srinivasan-15/SmartSight](https://github.com/sahana-srinivasan-15/SmartSight)
+- **Simplest Live Deployment Option (If Required by Evaluators):** If evaluator guidelines mandate a public URL, the repository can be deployed in one click via **GitHub Pages** (Repository Settings > Pages > Source: `main` branch / root). Because SmartSight is 100% static client-side HTML/CSS/JS and GitHub Pages provides automated HTTPS, all WebRTC camera permissions operate natively without server setup.
 - **Local Execution:** Operates immediately in any standard modern browser via direct file launch or local static server (detailed below).
 
 ### Application Structure & Pages
