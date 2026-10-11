@@ -2741,6 +2741,287 @@ a.btn:hover * {
   gap: 8px;
 }
 
+/* ==========================================================================
+   Camera Diagnostics Modal Refined Styles
+   ========================================================================== */
+#camera-modal-backdrop .modal-dialog {
+  max-width: 680px;
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.25), 0 8px 10px -6px rgba(15, 23, 42, 0.15);
+}
+
+#camera-modal-backdrop .modal-body {
+  padding: 20px 22px;
+  max-height: calc(85vh - 130px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--navy-700);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.modal-section-title i {
+  width: 14px;
+  height: 14px;
+  color: var(--accent);
+}
+
+/* 1. Diagnostics Metadata Grid */
+.modal-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 540px) {
+  .modal-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.modal-detail-card {
+  background: var(--slate-50);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm, 6px);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.modal-detail-card:hover {
+  background: #fff;
+  border-color: var(--slate-300);
+}
+
+.detail-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+/* 2. Safety Triad (The Three Safety Separation Rules) */
+.safety-triad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 580px) {
+  .safety-triad-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.triad-col {
+  background: var(--slate-50);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  padding: 12px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.triad-col:hover {
+  background: #fff;
+  border-color: var(--slate-300);
+}
+
+.triad-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.triad-value {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.triad-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* 3. Validation Rule Checks Table */
+.validation-table-wrap {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  background: #fff;
+}
+
+.validation-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+
+.validation-table th {
+  background: var(--slate-100);
+  color: var(--navy-800);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.validation-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--slate-100);
+  vertical-align: middle;
+  color: var(--text-secondary);
+}
+
+.validation-table tr:last-child td {
+  border-bottom: none;
+}
+
+.validation-table tr:hover td {
+  background: var(--slate-50);
+}
+
+.validation-table td strong {
+  color: var(--text-main);
+  font-size: 12px;
+}
+
+.metric-timing-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--slate-600);
+}
+
+.check-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--fresh-bg);
+  color: var(--fresh-dark);
+  border: 1px solid var(--fresh-border);
+  white-space: nowrap;
+}
+
+.check-pass i {
+  width: 12px;
+  height: 12px;
+}
+
+.check-fail {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--offline-bg);
+  color: var(--offline-dark);
+  border: 1px solid var(--offline-border);
+  white-space: nowrap;
+}
+
+.check-fail i {
+  width: 12px;
+  height: 12px;
+}
+
+/* 4. Hazard & Observation Notes */
+.hazard-observation-box {
+  padding: 12px 16px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--slate-50);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hazard-observation-box.has-hazard {
+  background: var(--offline-bg);
+  border-color: var(--offline-border);
+  border-left: 4px solid var(--offline);
+}
+
+.obs-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.obs-label i {
+  width: 13px;
+  height: 13px;
+}
+
+.obs-text {
+  font-size: 12.5px;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.obs-notes {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--slate-200);
+  font-size: 11.5px;
+  color: var(--slate-600);
+  line-height: 1.4;
+}
+
+
 /* Modal Form Controls */
 .settings-form {
   display: flex;

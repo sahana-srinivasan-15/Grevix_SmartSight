@@ -1885,14 +1885,14 @@ function renderModalContent(camera) {
       </div>
       <div class="modal-detail-card">
         <span class="detail-label">Active Inspection Request</span>
-        <span class="detail-value">${camera.inspectionRequested ? '<span class="text-stale">REQUESTED</span>' : 'None Active'}</span>
+        <span class="detail-value">${camera.inspectionRequested ? '<span class="badge badge-stale font-mono">REQUESTED</span>' : 'None Active'}</span>
       </div>
     </div>
 
     <!-- The 3 Separated Metrics -->
     <div>
-      <h4 class="modal-section-title">The Three Safety Separation Rules</h4>
-      <div class="safety-triad-grid" style="border: 1px solid var(--slate-200); border-radius: var(--radius-md);">
+      <h4 class="modal-section-title"><i data-lucide="shield-check"></i> The Three Safety Separation Rules</h4>
+      <div class="safety-triad-grid">
         <div class="triad-col">
           <span class="triad-label">Feed Freshness</span>
           <span class="triad-value ${getStatusBadgeClass(camera.status)}">${camera.status}</span>
@@ -1900,64 +1900,96 @@ function renderModalContent(camera) {
         </div>
         <div class="triad-col">
           <span class="triad-label">AI Confidence</span>
-          <span class="triad-value">${camera.aiConfidence ? `${camera.aiConfidence}%` : 'N/A'}</span>
+          <span class="triad-value ${camera.aiConfidence ? 'badge-fresh' : 'badge-unknown'}">${camera.aiConfidence ? `${camera.aiConfidence}%` : 'N/A'}</span>
           <span class="triad-sub">${camera.status === 'FRESH' ? 'Verified on live frame' : 'Zero trust on degraded feed'}</span>
         </div>
         <div class="triad-col">
           <span class="triad-label">Current Site Risk</span>
           <span class="triad-value ${getRiskBadgeClass(camera.currentRisk)}">${camera.currentRisk}</span>
-          <span class="triad-sub">${camera.currentRisk === 'UNKNOWN' ? 'Safety cannot be proven' : 'Verified'}</span>
+          <span class="triad-sub">${camera.currentRisk === 'UNKNOWN' ? 'Safety cannot be proven' : 'Verified Compliant'}</span>
         </div>
       </div>
     </div>
 
     <!-- Timestamp & Validation Breakdown -->
     <div>
-      <h4 class="modal-section-title">Validation Rule Checks</h4>
-      <table class="validation-table">
-        <thead>
-          <tr>
-            <th>Safety Rule</th>
-            <th>Observed Metric</th>
-            <th>Result</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Timestamp Ordering</strong></td>
-            <td>Capture: ${simulatedCaptureTime}<br>Receive: ${simulatedReceiveTime}</td>
-            <td class="check-pass">PASS (Capture ≤ Receive)</td>
-          </tr>
-          <tr>
-            <td><strong>Freshness Threshold</strong></td>
-            <td>Age: ${camera.lastUploadOffsetSec}s (Threshold: ${config.freshThreshold}s)</td>
-            <td class="${camera.lastUploadOffsetSec <= config.freshThreshold ? 'check-pass' : 'check-fail'}">
-              ${camera.lastUploadOffsetSec <= config.freshThreshold ? 'PASS (Fresh)' : 'DEGRADED (Exceeded)'}
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Frame Hash Uniqueness</strong></td>
-            <td>Hash: <code>${camera.lastFrameHash || 'N/A'}</code></td>
-            <td class="${camera.status === 'DUPLICATE' ? 'check-fail' : 'check-pass'}">
-              ${camera.status === 'DUPLICATE' ? 'FAIL (Duplicate Hash)' : 'PASS (Unique)'}
-            </td>
-          </tr>
-          <tr>
-            <td><strong>Site Risk Safety Rule</strong></td>
-            <td>Feed is ${camera.status}</td>
-            <td class="${camera.status === 'FRESH' ? 'check-pass' : 'check-fail'}">
-              ${camera.status === 'FRESH' ? 'Normal Hazard Detection' : 'FAIL-SAFE: Risk set to UNKNOWN'}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <h4 class="modal-section-title"><i data-lucide="file-check-2"></i> Validation Rule Integrity Checks</h4>
+      <div class="validation-table-wrap">
+        <table class="validation-table">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Safety Rule</th>
+              <th style="width: 44%;">Observed Telemetry</th>
+              <th style="width: 26%;">Integrity Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Timestamp Ordering</strong></td>
+              <td>
+                <div class="metric-timing-box">
+                  <span>Capture: ${simulatedCaptureTime}</span>
+                  <span>Receive: ${simulatedReceiveTime}</span>
+                </div>
+              </td>
+              <td><span class="check-pass"><i data-lucide="check"></i> PASS (Valid)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Freshness Threshold</strong></td>
+              <td>
+                <div class="metric-timing-box">
+                  <span>Age: <strong>${camera.lastUploadOffsetSec}s</strong></span>
+                  <span>Limit: ≤ ${config.freshThreshold}s</span>
+                </div>
+              </td>
+              <td>
+                <span class="${camera.lastUploadOffsetSec <= config.freshThreshold ? 'check-pass' : 'check-fail'}">
+                  <i data-lucide="${camera.lastUploadOffsetSec <= config.freshThreshold ? 'check' : 'alert-triangle'}"></i>
+                  ${camera.lastUploadOffsetSec <= config.freshThreshold ? 'PASS (Fresh)' : 'DEGRADED'}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Frame Hash Uniqueness</strong></td>
+              <td>
+                <div class="metric-timing-box">
+                  <span>Hash: <code style="font-size: 10.5px;">${camera.lastFrameHash ? camera.lastFrameHash.slice(0, 16) + '...' : 'N/A'}</code></span>
+                </div>
+              </td>
+              <td>
+                <span class="${camera.status === 'DUPLICATE' ? 'check-fail' : 'check-pass'}">
+                  <i data-lucide="${camera.status === 'DUPLICATE' ? 'alert-octagon' : 'check'}"></i>
+                  ${camera.status === 'DUPLICATE' ? 'FAIL (Duplicate)' : 'PASS (Unique)'}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Site Risk Fail-Safe</strong></td>
+              <td>
+                <div class="metric-timing-box">
+                  <span>Status: <strong>${camera.status}</strong></span>
+                </div>
+              </td>
+              <td>
+                <span class="${camera.status === 'FRESH' ? 'check-pass' : 'check-fail'}">
+                  <i data-lucide="${camera.status === 'FRESH' ? 'shield-check' : 'shield-alert'}"></i>
+                  ${camera.status === 'FRESH' ? 'Normal Detection' : 'FAIL-SAFE: UNKNOWN'}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Observation & Notes -->
     <div class="hazard-observation-box ${camera.hasActiveHazard ? 'has-hazard' : ''}">
-      <span class="obs-label">Observation Record:</span>
+      <span class="obs-label">
+        <i data-lucide="${camera.hasActiveHazard ? 'alert-triangle' : 'clipboard-list'}"></i>
+        Observation Record:
+      </span>
       <p class="obs-text">${camera.lastObservation}</p>
-      ${camera.inspectionNotes ? `<p style="margin-top:4px; font-size:0.75rem; color:var(--slate-600);"><strong>Inspection Notes:</strong> ${camera.inspectionNotes}</p>` : ''}
+      ${camera.inspectionNotes ? `<div class="obs-notes"><strong>Inspection Notes:</strong> ${camera.inspectionNotes}</div>` : ''}
     </div>
   `;
 

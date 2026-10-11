@@ -106,12 +106,19 @@ Before any camera image is permitted to inform job-site risk:
 - **Application Logic:** Vanilla JavaScript ES6+ (WebRTC `getUserMedia`, Canvas 2D API, reactive state management)
 - **Testing:** Node.js `vm` sandbox acceptance test runner with media and canvas mocks
 - **Icons:** Lucide Icons (CDN with SVG fallbacks)
+- **AI & Engineering Tools Used:** Google Antigravity IDE with Gemini model assistance (used as pair-programming and test architecture review assistant during development; runtime surveillance reliability is powered by client-side zero-trust algorithms without external black-box models)
+- **Project Documentation & Logs:** [BUILD_LOG.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/BUILD_LOG.md) (Build & Decision Log) and [feedback/FEEDBACK.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/feedback/FEEDBACK.md) (Challenge 2 Peer Feedback & Iteration Record)
 
 ---
 
 ## 6. How to Open and Run SmartSight (Multi-Page Navigation)
 
 SmartSight is completely frontend-based and requires no build tools, npm installs, or backend servers.
+
+### Deployment Status & Live Demo
+- **Live Deployment URL:** No external cloud deployment URL is hosted (SmartSight is intentionally engineered for 100% in-browser client execution to maintain total worker data privacy).
+- **Public GitHub Repository:** [https://github.com/sahana-srinivasan-15/SmartSight](https://github.com/sahana-srinivasan-15/SmartSight)
+- **Local Execution:** Operates immediately in any standard modern browser via direct file launch or local static server (detailed below).
 
 ### Application Structure & Pages
 - **[index.html](file:///C:/Users/sahan/OneDrive/Desktop/gr/index.html) — Dashboard Overview:** System summary KPIs, camera status summary snapshot, active alerts preview, and quick navigation cards.
@@ -123,7 +130,7 @@ SmartSight is completely frontend-based and requires no build tools, npm install
 ### Method 1: Direct File Launch (Fastest)
 1. Open the project folder (`C:\Users\sahan\OneDrive\Desktop\gr\`).
 2. Double-click `index.html` to open the Dashboard in **Google Chrome**, **Microsoft Edge**, or **Mozilla Firefox**.
-3. Use the sidebar navigation, dashboard quick buttons, or browser Back/Forward buttons to navigate between all 5 pages.
+3. Use the sidebar navigation, dashboard quick buttons, or browser Back/Forward buttons to navigate between all pages.
 
 ### Method 2: Local HTTP Server (Recommended for WebRTC Webcam)
 Modern browsers require `localhost` / `127.0.0.1` or HTTPS for full `getUserMedia` webcam permission access:
@@ -374,6 +381,10 @@ SMARTSIGHT TEST RESULTS: 95/95 tests passed successfully!
 ## 10. License & Attribution
 
 - **Project:** SmartSight — Construction Safety Camera Reliability Monitor
-- **Event:** GREVIX AFTERCODE Hackathon (Challenge Card 2)
+- **Event:** GREVIX AFTERCODE Hackathon (Challenge Card 2 — The Final Forge)
 - **Author:** Sahana Srinivasan
 - **Repository:** [https://github.com/sahana-srinivasan-15/SmartSight](https://github.com/sahana-srinivasan-15/SmartSight)
+- **Deliverables & Logs:**
+  - Build & Decision Log: [BUILD_LOG.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/BUILD_LOG.md)
+  - Peer Review Feedback & Evidence: [feedback/FEEDBACK.md](file:///C:/Users/sahan/OneDrive/Desktop/gr/feedback/FEEDBACK.md)
+
