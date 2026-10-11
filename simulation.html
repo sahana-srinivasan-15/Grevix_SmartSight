@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartSight: Interactive Simulation Lab — Test camera feed integrity failure modes, zero-trust UNKNOWN risk locking, and verified frame recovery.">
+  <title>Simulation Lab — SmartSight Safety Console</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="simulation-page" id="simulation-lab-page">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app-layout">
+    <!-- Streamlined Industrial Sidebar Navigation (5 Main Sections) -->
+    <aside class="app-sidebar" id="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand" title="SmartSight Dashboard">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">SmartSight</span>
+            <span class="brand-badge">SAFETY CONSOLE</span>
+          </div>
+        </a>
+        <button class="mobile-close-btn mobile-only" id="mobile-sidebar-close" aria-label="Close navigation sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Core Principle Callout -->
+      <div class="sidebar-principle">
+        <div class="principle-tag">
+          <i data-lucide="shield"></i>
+          <span>CORE SAFETY PRINCIPLE</span>
+        </div>
+        <p class="principle-desc">
+          A missing, stale, or duplicate feed <strong>never proves</strong> site safety. Unreliable feeds default to <strong>UNKNOWN</strong> risk.
+        </p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">MAIN NAVIGATION</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link" id="sidebar-nav-dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard Overview</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="cameras.html" class="nav-link active" id="sidebar-nav-cameras">
+              <i data-lucide="video"></i>
+              <span>Camera Monitoring</span>
+              <span class="nav-counter" id="nav-camera-count">4</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="alerts.html" class="nav-link" id="sidebar-nav-alerts">
+              <i data-lucide="bell"></i>
+              <span>Active Alerts</span>
+              <span class="nav-counter counter-alert" id="nav-alert-count">2</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="history.html" class="nav-link" id="sidebar-nav-audit">
+              <i data-lucide="clipboard-list"></i>
+              <span>Event History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="settings.html" class="nav-link" id="sidebar-nav-settings">
+              <i data-lucide="sliders"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Surveillance Health Widget -->
+      <div class="sidebar-health-widget">
+        <div class="widget-head">
+          <span class="widget-label">FEED COVERAGE</span>
+          <span class="health-status-badge status-degraded" id="overall-health-badge">DEGRADED</span>
+        </div>
+        <div class="health-metrics">
+          <div class="health-pct-row">
+            <span>Verified Fresh:</span>
+            <strong id="sidebar-fresh-pct">50%</strong>
+          </div>
+          <div class="health-bar-track">
+            <div class="health-bar-fill" id="sidebar-progress-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-actions">
+          <button class="btn btn-outline btn-sm btn-block" id="toggle-ticker-btn" title="Pause or resume time aging">
+            <i data-lucide="pause" id="ticker-icon"></i>
+            <span id="ticker-text">Pause Aging</span>
+          </button>
+          <button class="btn btn-secondary btn-sm btn-block" id="reset-demo-sidebar-btn" title="Reset all demo states">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Demo State</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Main Body Container -->
+      <main class="main-body" id="main-content">
+        <!-- Breadcrumbs Navigation Bar with Clock & Mobile Menu Toggle -->
+        <nav class="breadcrumb-bar" aria-label="Breadcrumbs">
+          <div class="breadcrumb-left">
+            <button class="mobile-menu-btn mobile-only" id="mobile-sidebar-open" aria-label="Open navigation menu">
+              <i data-lucide="menu"></i>
+            </button>
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item"><a href="index.html"><i data-lucide="home"></i> SmartSight</a></li>
+              <li class="breadcrumb-item"><a href="cameras.html"><i data-lucide="video"></i> Camera Monitoring</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Simulation Lab</li>
+            </ol>
+          </div>
+          <div class="breadcrumb-right">
+            <a href="cameras.html" class="btn btn-outline btn-sm" title="Return to Camera Monitoring">
+              <i data-lucide="arrow-left"></i> Back to Cameras
+            </a>
+            <div class="breadcrumb-clock" title="Local system clock">
+              <i data-lucide="clock"></i>
+              <span class="clock-time font-mono" id="live-clock">--:--:--</span>
+            </div>
+          </div>
+        </nav>
+
+        <!-- 1. GUIDED DEMO WALKTHROUGH DECK (Priority 2) -->
+        <div class="guided-demo-deck" id="guided-demo-deck" aria-label="Guided Reviewer Demonstration">
+          <div class="guided-deck-header">
+            <div class="guided-deck-badge">
+              <span class="guided-step-counter" id="guided-step-counter">STEP 1 OF 3</span>
+              <span class="guided-step-title" id="guided-step-title">Fresh Feed Validation</span>
+            </div>
+            <div class="guided-deck-actions">
+              <button class="btn btn-sm btn-outline" id="guided-prev-btn" disabled aria-label="Previous demo step">
+                <i data-lucide="arrow-left"></i> Previous
+              </button>
+              <button class="btn btn-sm btn-primary" id="guided-next-btn" aria-label="Next demo step">
+                <span>Next Step</span> <i data-lucide="arrow-right"></i>
+              </button>
+              <button class="btn btn-sm btn-secondary" id="guided-exit-btn" title="Exit guided walkthrough" aria-label="Exit guided walkthrough">
+                <i data-lucide="x"></i> Exit Tour
+              </button>
+            </div>
+          </div>
+
+          <div class="guided-deck-body">
+            <div class="guided-explanation-col">
+              <h3 class="guided-headline" id="guided-headline">Normal Automated Hazard Detection</h3>
+              <p class="guided-text" id="guided-text">
+                When a camera transmits an image within the freshness limit (≤ 60s), the surveillance engine validates the frame's integrity and permits AI hazard detection to proceed normally.
+              </p>
+              <div class="guided-target-note">
+                <i data-lucide="crosshair"></i>
+                <span id="guided-target-note">Observing target camera: <strong>CAM-101 (North Access Gate)</strong></span>
+              </div>
+            </div>
+
+            <div class="guided-diff-col">
+              <div class="guided-diff-title">
+                <i data-lucide="git-commit"></i> What Changed on the Dashboard
+              </div>
+              <ul class="guided-diff-list" id="guided-diff-list">
+                <!-- Dynamically populated per step -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. INTERACTIVE SIMULATION LAB CONTROLS SECTION -->
+        <section class="section-container" id="simulations-section" aria-label="Interactive Simulation Lab">
+          <div class="section-header-bar">
+            <div class="section-title-wrap">
+              <div class="title-with-badge">
+                <h2 class="section-title">Interactive Failure Injection & Stress Testing Lab</h2>
+                <span class="section-mode-badge badge-sim-mode">
+                  <i data-lucide="flask-conical"></i> 7 TEST SCENARIOS
+                </span>
+              </div>
+              <p class="section-desc">
+                Inject simulated feed faults into site cameras to observe how the zero-trust engine decouples stale imagery from site safety.
+              </p>
+            </div>
+
+            <div class="simulation-header-actions">
+              <button class="btn btn-primary btn-sm btn-guided-demo" id="start-guided-demo-btn" title="Start guided 3-step walkthrough">
+                <i data-lucide="compass"></i> <span>Start Guided Demo Walkthrough</span>
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btn-scenario-reset" title="Restore baseline scenario">
+                <i data-lucide="rotate-ccw"></i> <span>Reset All Scenarios</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Simulation Toolbar: Camera Selector & Scenario Pills -->
+          <div class="simulation-toolbar" style="margin-bottom: 20px;">
+            <div class="toolbar-left">
+              <span class="toolbar-title"><i data-lucide="target"></i> Target Camera:</span>
+              <div class="toolbar-select-wrap">
+                <label for="simulation-target-select" class="sr-only">Target Camera</label>
+                <select id="simulation-target-select" class="form-select-sm" aria-label="Select target camera for simulation">
+                  <option value="CAM-101">CAM-101 (North Access Gate)</option>
+                  <option value="CAM-102">CAM-102 (Scaffold Zone B)</option>
+                  <option value="CAM-103" selected>CAM-103 (Material Storage)</option>
+                  <option value="CAM-104">CAM-104 (East Excavation)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="toolbar-actions">
+              <div class="scenario-pills-group">
+                <button class="scenario-pill pill-fresh" id="btn-scenario-a" data-scenario="A" title="Age ≤ 60s: Marks feed FRESH; evaluations proceed">
+                  <span>A: Fresh (≤60s)</span>
+                </button>
+                <button class="scenario-pill pill-stale" id="btn-scenario-stale" data-scenario="STALE" title="Age 95s: Marks feed STALE; risk becomes UNKNOWN">
+                  <span>B: Stale (95s)</span>
+                </button>
+                <button class="scenario-pill pill-critical" id="btn-scenario-b" data-scenario="CRITICAL_STALE" title="Age > 180s: Marks CRITICAL STALE; risk UNKNOWN">
+                  <span>C: Critical Stale</span>
+                </button>
+                <button class="scenario-pill pill-offline" id="btn-scenario-c" data-scenario="OFFLINE" title="Signal lost: Marks OFFLINE; risk UNKNOWN">
+                  <span>D: Offline</span>
+                </button>
+                <button class="scenario-pill pill-invalid" id="btn-scenario-invalid" data-scenario="INVALID" title="Corrupt payload: Marks INVALID; risk UNKNOWN">
+                  <span>E: Invalid Data</span>
+                </button>
+                <button class="scenario-pill pill-duplicate" id="btn-scenario-d" data-scenario="DUPLICATE" title="Identical hash: Marks DUPLICATE; risk UNKNOWN">
+                  <span>F: Duplicate</span>
+                </button>
+                <button class="scenario-pill pill-recovery" id="btn-scenario-e" data-scenario="RECOVERY" title="Fresh 8s frame: Ingests valid frame and restores FRESH">
+                  <i data-lucide="refresh-cw"></i> <span>G: Recovery</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scenario Guide Cards Grid -->
+          <div class="settings-page-grid" style="margin-bottom: 24px;">
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3 class="settings-card-title">
+                  <i data-lucide="alert-octagon" class="text-offline"></i>
+                  <span>Zero-Trust Failure Invalidation Rules</span>
+                </h3>
+              </div>
+              <ul class="audit-info-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px;">
+                <li><strong>Scenario B & C (Staleness):</strong> Simulates image upload network latency. When frame age exceeds 60s (Stale) or 180s (Critical Stale), site risk locks to <code>UNKNOWN</code>.</li>
+                <li><strong>Scenario D (Offline):</strong> Simulates power loss or disconnected carrier. Unverified feeds immediately mandate supervisor inspection.</li>
+                <li><strong>Scenario E & F (Corruption / Replay):</strong> Simulates truncated JPEG payloads or static DVR buffer loops. Visual similarity triggers duplicate alarm.</li>
+              </ul>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <h3 class="settings-card-title">
+                  <i data-lucide="shield-check" class="text-fresh"></i>
+                  <span>Strict Validated Recovery Handshake</span>
+                </h3>
+              </div>
+              <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 12px;">
+                Alerts cannot be dismissed by operator convenience. A camera only clears its safety warning and unlocks hazard detection when a genuine fresh frame (<strong>≤ 60s</strong>) with ordered timestamps and cryptographic uniqueness is ingested.
+              </p>
+              <div class="info-callout" style="margin: 0;">
+                <i data-lucide="info"></i>
+                <div style="font-size: 12px;">
+                  Click <strong>G: Recovery</strong> after injecting any failure to witness the real-time recovery handshake.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Impact Response: Chosen Target Camera -->
+          <div class="section-header-bar" style="border-top: 1px solid var(--border-color); padding-top: 16px; margin-bottom: 14px;">
+            <div class="section-title-wrap">
+              <div class="title-with-badge">
+                <h3 class="section-title" style="font-size: 15px;">Selected Target Camera View</h3>
+                <span class="badge-status badge-fresh font-mono">SINGLE CAMERA TESTING</span>
+              </div>
+              <p class="section-desc">Displaying strictly the chosen camera under stress test.</p>
+            </div>
+            <a href="cameras.html" class="btn btn-outline btn-sm">
+              <i data-lucide="video"></i> View All Cameras
+            </a>
+          </div>
+
+          <div id="simulated-wrapper" style="display: block;">
+            <div class="cameras-grid" id="cameras-grid">
+              <!-- Rendered dynamically by app.js renderCameraGrid() - shows ONLY the chosen camera! -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Hidden elements for test and script compatibility -->
+        <div id="alerts-container" style="display: none;" aria-hidden="true"></div>
+        <table id="audit-table" style="display: none;" aria-hidden="true"><tbody id="audit-table-body"></tbody></table>
+      </main>
+
+      <!-- Dashboard Footer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <strong>SmartSight Construction Safety Camera Reliability Monitor</strong>
+            <span class="footer-note">• Feed reliability monitoring prototype. Zero external image uploads.</span>
+          </div>
+          <div class="footer-right">
+            <span class="footer-tag">GREVIX AFTERCODE Challenge Card 2</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL: Camera Details Modal -->
+  <div class="modal-backdrop" id="camera-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-camera-title" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-tag font-mono" id="modal-camera-id">CAM-101</span>
+          <h3 class="modal-title" id="modal-camera-title">North Access Gate</h3>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-body-content">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-secondary-action">Close</button>
+        <div class="modal-actions-right" id="modal-primary-actions">
+          <!-- Dynamic action buttons -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Custom Confirmation Dialog -->
+  <div class="modal-backdrop" id="confirm-modal-backdrop" role="dialog" aria-modal="true" hidden>
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h4 class="modal-title" id="confirm-modal-title">Confirm Action</h4>
+      </div>
+      <div class="modal-body" id="confirm-modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-danger" id="confirm-proceed-btn">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Application -->
+  <script src="app.js"></script>
+</body>
+</html>

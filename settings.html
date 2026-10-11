@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartSight: Validation Thresholds & Preferences — Configure feed freshness limits, aging simulation speed, and examine zero-trust safety principles.">
+  <title>Settings — SmartSight Safety Console</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app-layout">
+    <!-- Streamlined Industrial Sidebar Navigation -->
+    <aside class="app-sidebar" id="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand" title="SmartSight Dashboard">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">SmartSight</span>
+            <span class="brand-badge">SAFETY CONSOLE</span>
+          </div>
+        </a>
+        <button class="mobile-close-btn mobile-only" id="mobile-sidebar-close" aria-label="Close navigation sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Core Principle Callout -->
+      <div class="sidebar-principle">
+        <div class="principle-tag">
+          <i data-lucide="shield"></i>
+          <span>CORE SAFETY PRINCIPLE</span>
+        </div>
+        <p class="principle-desc">
+          A missing, stale, or duplicate feed <strong>never proves</strong> site safety. Unreliable feeds default to <strong>UNKNOWN</strong> risk.
+        </p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">MAIN NAVIGATION</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link" id="sidebar-nav-dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard Overview</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="cameras.html" class="nav-link" id="sidebar-nav-cameras">
+              <i data-lucide="video"></i>
+              <span>Camera Monitoring</span>
+              <span class="nav-counter" id="nav-camera-count">4</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="alerts.html" class="nav-link" id="sidebar-nav-alerts">
+              <i data-lucide="bell"></i>
+              <span>Active Alerts</span>
+              <span class="nav-counter counter-alert" id="nav-alert-count">2</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="history.html" class="nav-link" id="sidebar-nav-audit">
+              <i data-lucide="clipboard-list"></i>
+              <span>Event History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="settings.html" class="nav-link active" id="sidebar-nav-settings">
+              <i data-lucide="sliders"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Surveillance Health Widget -->
+      <div class="sidebar-health-widget">
+        <div class="widget-head">
+          <span class="widget-label">FEED COVERAGE</span>
+          <span class="health-status-badge status-degraded" id="overall-health-badge">DEGRADED</span>
+        </div>
+        <div class="health-metrics">
+          <div class="health-pct-row">
+            <span>Verified Fresh:</span>
+            <strong id="sidebar-fresh-pct">50%</strong>
+          </div>
+          <div class="health-bar-track">
+            <div class="health-bar-fill" id="sidebar-progress-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-actions">
+          <button class="btn btn-outline btn-sm btn-block" id="toggle-ticker-btn" title="Pause or resume time aging">
+            <i data-lucide="pause" id="ticker-icon"></i>
+            <span id="ticker-text">Pause Aging</span>
+          </button>
+          <button class="btn btn-secondary btn-sm btn-block" id="reset-demo-sidebar-btn" title="Reset all demo states">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Demo State</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Main Body Container -->
+      <main class="main-body" id="main-content">
+        <!-- Breadcrumbs Navigation Bar with Clock & Mobile Menu Toggle -->
+        <nav class="breadcrumb-bar" aria-label="Breadcrumbs">
+          <div class="breadcrumb-left">
+            <button class="mobile-menu-btn mobile-only" id="mobile-sidebar-open" aria-label="Open navigation menu">
+              <i data-lucide="menu"></i>
+            </button>
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item"><a href="index.html"><i data-lucide="home"></i> SmartSight</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Settings</li>
+            </ol>
+          </div>
+          <div class="breadcrumb-right">
+            <div class="breadcrumb-clock" title="Local system clock">
+              <i data-lucide="clock"></i>
+              <span class="clock-time font-mono" id="live-clock">--:--:--</span>
+            </div>
+            <div class="breadcrumb-page-badge font-mono">CONFIG • PARAMETERS & ARCHITECTURE</div>
+          </div>
+        </nav>
+
+        <!-- Settings Page Grid Layout -->
+        <div class="settings-page-grid">
+          <!-- Card 1: Configuration Form -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <h2 class="settings-card-title">
+                <i data-lucide="sliders" class="text-accent"></i>
+                <span>Timing & Freshness Thresholds</span>
+              </h2>
+              <p class="settings-card-desc">
+                Define the time windows governing feed reliability states.
+              </p>
+            </div>
+
+            <div class="info-callout" style="margin-bottom: 20px;">
+              <i data-lucide="info"></i>
+              <div>
+                <strong>Demonstration Defaults Notice:</strong>
+                <p>These values represent demonstration defaults for hackathon evaluation, not universal fixed standards for all construction sites.</p>
+              </div>
+            </div>
+
+            <form id="settings-form" class="settings-form" onsubmit="return false;">
+              <div class="form-group">
+                <label for="threshold-fresh-input" class="form-label">
+                  <span>Fresh Threshold (seconds)</span>
+                  <span class="badge-sub">Default: 60s</span>
+                </label>
+                <p class="form-help">Images captured within this age are validated as fresh and proceed to live evaluation.</p>
+                <input type="number" id="threshold-fresh-input" class="form-control" min="5" max="300" value="60" required>
+              </div>
+
+              <div class="form-group">
+                <label for="threshold-stale-input" class="form-label">
+                  <span>Stale Threshold (seconds)</span>
+                  <span class="badge-sub">Default: 180s</span>
+                </label>
+                <p class="form-help">Images between Fresh and Stale thresholds trigger warnings. Site risk is set to UNKNOWN.</p>
+                <input type="number" id="threshold-stale-input" class="form-control" min="30" max="600" value="180" required>
+              </div>
+
+              <div class="form-group">
+                <label for="threshold-offline-input" class="form-label">
+                  <span>Offline Timeout (seconds)</span>
+                  <span class="badge-sub">Default: 300s (5 min)</span>
+                </label>
+                <p class="form-help">If no valid frames arrive beyond this timeout, the camera is marked OFFLINE.</p>
+                <input type="number" id="threshold-offline-input" class="form-control" min="60" max="1800" value="300" required>
+              </div>
+
+              <div class="form-group">
+                <label for="aging-speed-input" class="form-label">
+                  <span>Demo Aging Simulation Speed</span>
+                  <span class="badge-sub">Real-Time vs Accelerated</span>
+                </label>
+                <select id="aging-speed-input" class="form-control">
+                  <option value="1">1x (Real-time 1s = 1s)</option>
+                  <option value="5">5x (Fast Demo: 1s = 5s)</option>
+                  <option value="10">10x (Ultra Fast: 1s = 10s)</option>
+                </select>
+              </div>
+
+              <div class="settings-card-footer">
+                <button type="button" class="btn btn-secondary" id="settings-reset-default-btn">Restore Defaults</button>
+                <button type="button" class="btn btn-primary" id="settings-save-btn">Save Changes</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Card 2: Challenge Architecture Principles -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <h2 class="settings-card-title">
+                <i data-lucide="book-open" class="text-accent"></i>
+                <span>Challenge Card Context & Architecture</span>
+              </h2>
+              <p class="settings-card-desc">
+                Core design rules developed for the GREVIX AFTERCODE Challenge Card 2.
+              </p>
+            </div>
+
+            <div class="challenge-story">
+              <h4>The Safety Blindspot Problem</h4>
+              <p>
+                Traditional AI surveillance systems report <strong>"Zero Hazards Detected"</strong> whenever their computer vision pipeline returns no bounding boxes. But when a camera disconnects, freezes on a static frame, or delays image transmission, <strong>an empty detection list is not proof of safety — it is a dangerous blindspot.</strong>
+              </p>
+
+              <h4>The Three Core Architectural Rules</h4>
+              <div class="principle-box">
+                <div class="principle-item">
+                  <span class="p-num">1</span>
+                  <div>
+                    <strong>Feed Freshness ≠ AI Confidence ≠ Site Safety</strong>
+                    <p>Never combine these metrics into a single arbitrary score. A stale frame tells you nothing about active conditions.</p>
+                  </div>
+                </div>
+                <div class="principle-item">
+                  <span class="p-num">2</span>
+                  <div>
+                    <strong>Fail-Safe Default to UNKNOWN</strong>
+                    <p>Any stale, offline, duplicate, or corrupted image immediately sets current site risk to <code>UNKNOWN</code> and triggers an inspection mandate.</p>
+                  </div>
+                </div>
+                <div class="principle-item">
+                  <span class="p-num">3</span>
+                  <div>
+                    <strong>Strict Recovery Handshake</strong>
+                    <p>A camera cannot clear its alert until a fresh, verified frame is successfully ingested.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 24px; padding: 14px; background: var(--slate-50); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+                <strong style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--text-main); margin-bottom:4px;">
+                  <i data-lucide="shield-check" class="text-fresh"></i> Zero-Trust Guarantee
+                </strong>
+                <p style="margin:0; font-size:12px; color:var(--text-secondary); line-height:1.4;">
+                  SmartSight runs client-side in the browser. Zero video frames are transmitted to external cloud servers, guaranteeing complete physical privacy.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Dashboard Footer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <strong>SmartSight Construction Safety Camera Reliability Monitor</strong>
+            <span class="footer-note">• Feed reliability monitoring prototype. Zero external image uploads.</span>
+          </div>
+          <div class="footer-right">
+            <span class="footer-tag">GREVIX AFTERCODE Challenge Card 2</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Main JavaScript Application -->
+  <script src="app.js"></script>
+</body>
+</html>

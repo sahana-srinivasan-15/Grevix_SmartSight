@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartSight: Camera Monitoring — Live laptop webcam verification, simulated camera grid, client-side feed freshness tracking, and interactive simulation lab.">
+  <title>Camera Monitoring — SmartSight Safety Console</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app-layout">
+    <!-- Streamlined Industrial Sidebar Navigation -->
+    <aside class="app-sidebar" id="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand" title="SmartSight Dashboard">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">SmartSight</span>
+            <span class="brand-badge">SAFETY CONSOLE</span>
+          </div>
+        </a>
+        <button class="mobile-close-btn mobile-only" id="mobile-sidebar-close" aria-label="Close navigation sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Core Principle Callout -->
+      <div class="sidebar-principle">
+        <div class="principle-tag">
+          <i data-lucide="shield"></i>
+          <span>CORE SAFETY PRINCIPLE</span>
+        </div>
+        <p class="principle-desc">
+          A missing, stale, or duplicate feed <strong>never proves</strong> site safety. Unreliable feeds default to <strong>UNKNOWN</strong> risk.
+        </p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">MAIN NAVIGATION</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link" id="sidebar-nav-dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard Overview</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="cameras.html" class="nav-link active" id="sidebar-nav-cameras">
+              <i data-lucide="video"></i>
+              <span>Camera Monitoring</span>
+              <span class="nav-counter" id="nav-camera-count">4</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="alerts.html" class="nav-link" id="sidebar-nav-alerts">
+              <i data-lucide="bell"></i>
+              <span>Active Alerts</span>
+              <span class="nav-counter counter-alert" id="nav-alert-count">2</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="history.html" class="nav-link" id="sidebar-nav-audit">
+              <i data-lucide="clipboard-list"></i>
+              <span>Event History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="settings.html" class="nav-link" id="sidebar-nav-settings">
+              <i data-lucide="sliders"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Surveillance Health Widget -->
+      <div class="sidebar-health-widget">
+        <div class="widget-head">
+          <span class="widget-label">FEED COVERAGE</span>
+          <span class="health-status-badge status-degraded" id="overall-health-badge">DEGRADED</span>
+        </div>
+        <div class="health-metrics">
+          <div class="health-pct-row">
+            <span>Verified Fresh:</span>
+            <strong id="sidebar-fresh-pct">50%</strong>
+          </div>
+          <div class="health-bar-track">
+            <div class="health-bar-fill" id="sidebar-progress-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-actions">
+          <button class="btn btn-outline btn-sm btn-block" id="toggle-ticker-btn" title="Pause or resume time aging">
+            <i data-lucide="pause" id="ticker-icon"></i>
+            <span id="ticker-text">Pause Aging</span>
+          </button>
+          <button class="btn btn-secondary btn-sm btn-block" id="reset-demo-sidebar-btn" title="Reset all demo states">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Demo State</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Main Body Container -->
+      <main class="main-body" id="main-content">
+        <!-- Breadcrumbs Navigation Bar with Clock & Mobile Menu Toggle -->
+        <nav class="breadcrumb-bar" aria-label="Breadcrumbs">
+          <div class="breadcrumb-left">
+            <button class="mobile-menu-btn mobile-only" id="mobile-sidebar-open" aria-label="Open navigation menu">
+              <i data-lucide="menu"></i>
+            </button>
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item"><a href="index.html"><i data-lucide="home"></i> Dashboard</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Camera Monitoring</li>
+            </ol>
+          </div>
+          <div class="breadcrumb-right">
+            <div class="breadcrumb-clock" title="Local system clock">
+              <i data-lucide="clock"></i>
+              <span class="clock-time font-mono" id="live-clock">--:--:--</span>
+            </div>
+            <div class="breadcrumb-page-badge font-mono">SURVEILLANCE • 4 SENSORS + WEBCAM</div>
+          </div>
+        </nav>
+
+        <!-- 1. LIVE WEBCAM SECTION with Responsive Video Preview and Clean Controls -->
+        <section class="section-container webcam-section" id="webcam-section" aria-label="Real Laptop Webcam Feed Reliability Monitor">
+          <div class="section-header-bar webcam-header-bar">
+            <div class="section-title-wrap">
+              <div class="title-with-badge">
+                <h2 class="section-title">Live Laptop Webcam — Feed Freshness Monitor</h2>
+                <span class="section-mode-badge badge-webcam-mode" id="webcam-mode-badge">
+                  <i data-lucide="camera"></i> LIVE WEBCAM • HARDWARE INPUT
+                </span>
+              </div>
+              <p class="section-desc">
+                In-browser frame validation using WebRTC getUserMedia, client-side freshness tracking, duplicate rejection, and fail-safe safety decoupling.
+              </p>
+            </div>
+
+            <div class="webcam-header-tags">
+              <span class="tag-privacy" title="All processing occurs locally in browser memory">
+                <i data-lucide="lock"></i> 100% In-Browser Privacy
+              </span>
+              <span class="tag-limitation" title="Zero fabricated AI scores produced">
+                <i data-lucide="alert-circle"></i> Hazard AI: Not Implemented (Reliability Only)
+              </span>
+            </div>
+          </div>
+
+          <!-- Privacy & Demo Thresholds Notice -->
+          <div class="notice-callout-strip">
+            <div class="notice-icon"><i data-lucide="info"></i></div>
+            <div class="notice-text">
+              <strong>Demonstration Thresholds & Privacy Assurance:</strong>
+              This monitor validates frames using demo thresholds: 
+              <span class="threshold-tag tag-green">FRESH ≤ 60s</span>, 
+              <span class="threshold-tag tag-amber">STALE 61–180s</span>, 
+              <span class="threshold-tag tag-red">CRITICAL STALE &gt; 180s</span>, and 
+              <span class="threshold-tag tag-offline">OFFLINE</span> when camera is stopped.
+              <em>Configurable demo thresholds, not certified safety standards.</em> All video frames stay strictly inside local browser memory — zero images are transmitted.
+            </div>
+          </div>
+
+          <!-- Permission & Hardware Status Banner -->
+          <div class="webcam-permission-banner banner-prompt" id="webcam-permission-banner" role="status">
+            <div class="perm-banner-left">
+              <i data-lucide="video" id="perm-banner-icon"></i>
+              <div>
+                <strong id="perm-banner-title">Camera Permission: Ready to Request</strong>
+                <p id="perm-banner-desc">Click "Start Camera" below to request browser webcam access. Camera will not start automatically without user interaction.</p>
+              </div>
+            </div>
+            <div class="perm-banner-right">
+              <span class="perm-status-badge badge-prompt" id="perm-status-badge">PERMISSION: PROMPT</span>
+            </div>
+          </div>
+
+          <!-- Dual Viewports Grid: Video Preview (Left) & Last Captured Frame (Right) -->
+          <div class="webcam-viewports-grid">
+            <!-- Left Viewport: Live Video Stream -->
+            <div class="viewport-box">
+              <div class="viewport-box-header">
+                <div class="viewport-title-wrap">
+                  <i data-lucide="video"></i>
+                  <span>Live Video Preview</span>
+                </div>
+                <span class="stream-status-badge status-offline" id="webcam-stream-status-badge">CAMERA OFFLINE</span>
+              </div>
+
+              <div class="video-preview-wrapper" id="webcam-video-container">
+                <video id="webcam-preview" autoplay playsinline muted></video>
+                <div class="media-placeholder" id="webcam-video-placeholder">
+                  <i data-lucide="camera-off" class="placeholder-icon"></i>
+                  <p class="placeholder-title">Webcam Stream Stopped</p>
+                  <p class="placeholder-sub">Click "Start Camera" below to request access and start preview</p>
+                </div>
+                <!-- Video HUD Overlay -->
+                <div class="viewport-hud-overlay" id="webcam-video-hud" style="display: none;">
+                  <div class="hud-top">
+                    <span class="hud-tag"><span class="pulse-indicator"></span> LIVE WEBCAM</span>
+                    <span class="hud-time font-mono" id="webcam-hud-clock">--:--:--</span>
+                  </div>
+                  <div class="hud-bottom">
+                    <span class="hud-device" id="webcam-hud-device">Integrated Webcam</span>
+                    <span class="hud-rule">STREAM ACTIVE ≠ VALIDATED FRAME</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Video Controls Toolbar -->
+              <div class="viewport-controls-toolbar">
+                <div class="controls-buttons">
+                  <button class="btn btn-primary" id="webcam-start-btn" aria-label="Start laptop webcam">
+                    <i data-lucide="video"></i>
+                    <span>Start Camera</span>
+                  </button>
+                  <button class="btn btn-secondary" id="webcam-stop-btn" disabled aria-label="Stop laptop webcam">
+                    <i data-lucide="video-off"></i>
+                    <span>Stop Camera</span>
+                  </button>
+                </div>
+                <span class="controls-caption">
+                  <i data-lucide="info"></i> Keeping the stream running does not refresh frame freshness. Only clicking "Capture Frame" validates a new frame.
+                </span>
+              </div>
+            </div>
+
+            <!-- Right Viewport: Last Captured Frame Preview -->
+            <div class="viewport-box">
+              <div class="viewport-box-header">
+                <div class="viewport-title-wrap">
+                  <i data-lucide="camera"></i>
+                  <span>Last Captured Frame</span>
+                </div>
+                <span class="capture-validity-badge badge-missing" id="webcam-capture-badge">NO FRAME CAPTURED</span>
+              </div>
+
+              <div class="canvas-preview-wrapper" id="webcam-canvas-container">
+                <canvas id="webcam-captured-canvas" width="640" height="480"></canvas>
+                <div class="media-placeholder" id="webcam-canvas-placeholder">
+                  <i data-lucide="image" class="placeholder-icon"></i>
+                  <p class="placeholder-title">No Frame Captured Yet</p>
+                  <p class="placeholder-sub">Click "Capture Frame" to validate and snapshot the live stream</p>
+                </div>
+                <!-- Canvas HUD Overlay -->
+                <div class="viewport-hud-overlay" id="webcam-canvas-hud" style="display: none;">
+                  <div class="hud-top">
+                    <span class="hud-tag tag-snapshot">SNAPSHOT</span>
+                    <span class="hud-time font-mono" id="webcam-snapshot-timestamp-hud">--:--:--</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Capture Controls Toolbar -->
+              <div class="viewport-controls-toolbar">
+                <div class="controls-buttons">
+                  <button class="btn btn-primary" id="webcam-capture-btn" disabled aria-label="Capture frame from live webcam">
+                    <i data-lucide="camera"></i>
+                    <span>Capture Frame</span>
+                  </button>
+                  <button class="btn btn-outline" id="webcam-clear-capture-btn" aria-label="Clear captured frame">
+                    <i data-lucide="trash-2"></i>
+                    <span>Clear Frame</span>
+                  </button>
+                  <button class="btn btn-secondary" id="webcam-inject-hazard-btn" title="Simulate a recorded hazard observation for demo testing" aria-label="Simulate historical hazard">
+                    <i data-lucide="alert-triangle"></i>
+                    <span>Toggle Demo Hazard</span>
+                  </button>
+                </div>
+                <span class="controls-caption">
+                  <i data-lucide="cpu"></i> Rejects blank/black frames and detects consecutive duplicate frames.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rejection Alert Box -->
+          <div class="webcam-rejection-alert" id="webcam-rejection-alert" role="alert" style="display: none;">
+            <div class="rejection-alert-icon">
+              <i data-lucide="alert-octagon"></i>
+            </div>
+            <div class="rejection-alert-content">
+              <strong id="webcam-rejection-title">Frame Rejected by Validation Engine</strong>
+              <p id="webcam-rejection-reason">Rejection reason goes here.</p>
+              <span class="rejection-alert-disclaimer">
+                <strong>Important:</strong> Visual similarity is an approximation and cannot prove that an image is stale. Feed freshness timestamp was NOT refreshed.
+              </span>
+            </div>
+          </div>
+
+          <!-- Webcam Telemetry & Risk KPI Cards (4 Cards) -->
+          <div class="webcam-metrics-grid">
+            <div class="webcam-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Webcam Connection</span>
+                <i data-lucide="wifi" class="metric-icon"></i>
+              </div>
+              <div class="metric-val-wrap">
+                <span class="metric-status-badge status-offline" id="metric-webcam-connection">OFFLINE</span>
+              </div>
+              <p class="metric-desc" id="metric-webcam-conn-desc">MediaStream stopped</p>
+            </div>
+
+            <div class="webcam-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Last Valid Frame</span>
+                <i data-lucide="calendar" class="metric-icon"></i>
+              </div>
+              <div class="metric-val-wrap">
+                <span class="metric-main-value font-mono" id="metric-webcam-last-frame">Never Captured</span>
+              </div>
+              <p class="metric-desc" id="metric-webcam-frame-age">Frame Age: N/A</p>
+            </div>
+
+            <div class="webcam-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Feed Freshness</span>
+                <i data-lucide="clock" class="metric-icon"></i>
+              </div>
+              <div class="metric-val-wrap">
+                <span class="metric-status-badge status-missing" id="metric-webcam-freshness">MISSING</span>
+              </div>
+              <p class="metric-desc" id="metric-webcam-freshness-desc">No valid frame ingested</p>
+            </div>
+
+            <div class="webcam-metric-card card-risk-highlight">
+              <div class="metric-top">
+                <span class="metric-label">Current Site Risk</span>
+                <i data-lucide="shield-alert" class="metric-icon"></i>
+              </div>
+              <div class="metric-val-wrap">
+                <span class="metric-status-badge status-unknown" id="metric-webcam-risk">UNKNOWN</span>
+              </div>
+              <p class="metric-desc" id="metric-webcam-risk-desc">Feed unverified; safety unknown</p>
+            </div>
+          </div>
+
+          <!-- Explanation & Recommended Next Action Strip -->
+          <div class="webcam-action-strip">
+            <div class="action-strip-details">
+              <div class="strip-item">
+                <span class="strip-label"><i data-lucide="activity"></i> Feed Integrity Reason:</span>
+                <p class="strip-value" id="webcam-integrity-reason">
+                  Webcam is stopped. No valid frames captured.
+                </p>
+              </div>
+              <div class="strip-item">
+                <span class="strip-label"><i data-lucide="alert-circle"></i> Site Risk Explanation:</span>
+                <p class="strip-value" id="webcam-risk-explanation">
+                  Current site risk locked to UNKNOWN: camera stream is offline. Outdated or missing feeds cannot verify safety.
+                </p>
+              </div>
+            </div>
+
+            <div class="action-callout-box" id="webcam-action-callout">
+              <div class="action-callout-header">
+                <i data-lucide="alert-triangle"></i>
+                <span>RECOMMENDED NEXT ACTION:</span>
+              </div>
+              <p class="action-callout-text" id="webcam-recommended-action-text">
+                Camera offline: Start webcam or conduct immediate physical inspection. Never declare a construction site safe without verified fresh imagery.
+              </p>
+            </div>
+          </div>
+
+          <!-- Hazard Decoupling & Historical Records Notice -->
+          <div class="webcam-hazard-decoupling-grid">
+            <div class="decoupling-card">
+              <div class="decoupling-header">
+                <i data-lucide="brain-circuit"></i>
+                <span>Automated AI Hazard Detection Status</span>
+              </div>
+              <div class="decoupling-body">
+                <div class="decoupling-status-row">
+                  <span class="badge-dim">NOT IMPLEMENTED (SIMULATION ONLY)</span>
+                  <span class="decoupling-conf">AI Confidence: <strong>N/A</strong></span>
+                </div>
+                <p class="decoupling-text">
+                  This prototype monitors camera feed reliability. No genuine neural network or computer vision hazard model is connected to the laptop webcam. Zero fabricated confidence scores are produced.
+                </p>
+              </div>
+            </div>
+
+            <div class="decoupling-card">
+              <div class="decoupling-header">
+                <i data-lucide="history"></i>
+                <span>Last Known Hazard Observation</span>
+              </div>
+              <div class="decoupling-body">
+                <div class="historical-observation-box" id="webcam-historical-observation-box">
+                  <span class="historical-tag">HISTORICAL RECORD</span>
+                  <p class="historical-text" id="webcam-historical-text">No prior hazard observation recorded.</p>
+                  <span class="historical-time font-mono" id="webcam-historical-time">Timestamp: None</span>
+                </div>
+                <p class="historical-disclaimer">
+                  Historical hazard records are preserved for audit context only. If feed is not FRESH, site risk remains locked to UNKNOWN.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Wrapper to preserve compatibility with setAppMode if needed -->
+        <div id="simulated-wrapper" style="display: block;"></div>
+
+        <!-- 2. SIMULATED CAMERA MONITORING SECTION with Aligned, Readable Camera Cards -->
+        <section class="section-container cameras-monitoring-section" id="cameras-section" aria-label="Site Cameras Monitoring">
+          <div class="section-header-bar">
+            <div class="section-title-wrap">
+              <div class="title-with-badge">
+                <h2 class="section-title">Site Camera Grid & Integrity Status</h2>
+                <span class="section-mode-badge badge-sim-mode">
+                  <i data-lucide="layout-grid"></i> SIMULATED SENSORS • 4 CAMERAS
+                </span>
+              </div>
+              <p class="section-desc">
+                Simulated surveillance feeds evaluating camera connectivity, feed freshness, AI confidence, and site risk.
+              </p>
+            </div>
+
+            <!-- Action & Filter Controls -->
+            <div class="filter-pills-bar">
+              <button class="filter-pill active" data-filter="all" aria-label="Show all cameras">
+                All (<span id="filter-count-all">4</span>)
+              </button>
+              <button class="filter-pill" data-filter="fresh" aria-label="Show fresh cameras">
+                Fresh (<span id="filter-count-fresh">2</span>)
+              </button>
+              <button class="filter-pill" data-filter="stale" aria-label="Show stale cameras">
+                Stale (<span id="filter-count-stale">1</span>)
+              </button>
+              <button class="filter-pill" data-filter="offline" aria-label="Show offline cameras">
+                Offline (<span id="filter-count-offline">1</span>)
+              </button>
+            </div>
+          </div>
+
+          <!-- Simulation Launcher Callout Strip -->
+          <div class="simulation-launcher-strip">
+            <div class="launcher-strip-left">
+              <div class="launcher-icon"><i data-lucide="flask-conical"></i></div>
+              <div class="launcher-text">
+                <strong>Simulation Lab (Dedicated Testing Environment)</strong>
+                <p>Test feed staleness, dropped carrier, corrupted frames, and verified recovery on dedicated target cameras in a separate lab.</p>
+              </div>
+            </div>
+            <div class="launcher-strip-right">
+              <a href="simulation.html" class="btn btn-primary btn-sm" id="launch-simulation-lab-btn">
+                <i data-lucide="flask-conical"></i> <span>Launch Simulation Lab</span> <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Dynamic Camera Cards Grid -->
+          <div class="cameras-grid" id="cameras-grid">
+            <!-- Camera cards rendered by app.js renderCameraGrid() -->
+          </div>
+
+          <!-- Hidden compatibility elements for scripts/tests expecting simulation IDs -->
+          <div id="simulations-section" style="display: none;" aria-hidden="true">
+            <select id="simulation-target-select"><option value="CAM-101">CAM-101</option></select>
+            <button id="btn-scenario-a"></button>
+            <button id="btn-scenario-stale"></button>
+            <button id="btn-scenario-b"></button>
+            <button id="btn-scenario-c"></button>
+            <button id="btn-scenario-invalid"></button>
+            <button id="btn-scenario-d"></button>
+            <button id="btn-scenario-e"></button>
+            <button id="btn-scenario-reset"></button>
+            <button id="start-guided-demo-btn"></button>
+          </div>
+          <div id="guided-demo-deck" style="display: none;" aria-hidden="true">
+            <button id="guided-prev-btn"></button>
+            <button id="guided-next-btn"></button>
+            <button id="guided-exit-btn"></button>
+          </div>
+        </section>
+      </main>
+
+      <!-- Dashboard Footer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <strong>SmartSight Construction Safety Camera Reliability Monitor</strong>
+            <span class="footer-note">• Feed reliability monitoring prototype. Zero external image uploads.</span>
+          </div>
+          <div class="footer-right">
+            <span class="footer-tag">GREVIX AFTERCODE Challenge Card 2</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL: Camera Details Modal -->
+  <div class="modal-backdrop" id="camera-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-camera-title" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-tag font-mono" id="modal-camera-id">CAM-101</span>
+          <h3 class="modal-title" id="modal-camera-title">North Access Gate</h3>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-body-content">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-secondary-action">Close</button>
+        <div class="modal-actions-right" id="modal-primary-actions">
+          <!-- Dynamic action buttons -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Custom Confirmation Dialog -->
+  <div class="modal-backdrop" id="confirm-modal-backdrop" role="dialog" aria-modal="true" hidden>
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h4 class="modal-title" id="confirm-modal-title">Confirm Action</h4>
+      </div>
+      <div class="modal-body" id="confirm-modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-danger" id="confirm-proceed-btn">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Application -->
+  <script src="app.js"></script>
+</body>
+</html>

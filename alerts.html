@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartSight: Active Safety Alerts — Real-time actionable alerts for stale, duplicate, or missing camera feeds requiring immediate physical inspection.">
+  <title>Alerts & Safety — SmartSight Safety Console</title>
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="app-layout">
+    <!-- Streamlined Industrial Sidebar Navigation -->
+    <aside class="app-sidebar" id="sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand" title="SmartSight Dashboard">
+          <div class="brand-icon">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">SmartSight</span>
+            <span class="brand-badge">SAFETY CONSOLE</span>
+          </div>
+        </a>
+        <button class="mobile-close-btn mobile-only" id="mobile-sidebar-close" aria-label="Close navigation sidebar">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Core Principle Callout -->
+      <div class="sidebar-principle">
+        <div class="principle-tag">
+          <i data-lucide="shield"></i>
+          <span>CORE SAFETY PRINCIPLE</span>
+        </div>
+        <p class="principle-desc">
+          A missing, stale, or duplicate feed <strong>never proves</strong> site safety. Unreliable feeds default to <strong>UNKNOWN</strong> risk.
+        </p>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-group-title">MAIN NAVIGATION</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link" id="sidebar-nav-dashboard">
+              <i data-lucide="layout-dashboard"></i>
+              <span>Dashboard Overview</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="cameras.html" class="nav-link" id="sidebar-nav-cameras">
+              <i data-lucide="video"></i>
+              <span>Camera Monitoring</span>
+              <span class="nav-counter" id="nav-camera-count">4</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="alerts.html" class="nav-link active" id="sidebar-nav-alerts">
+              <i data-lucide="bell"></i>
+              <span>Active Alerts</span>
+              <span class="nav-counter counter-alert" id="nav-alert-count">2</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="history.html" class="nav-link" id="sidebar-nav-audit">
+              <i data-lucide="clipboard-list"></i>
+              <span>Event History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="settings.html" class="nav-link" id="sidebar-nav-settings">
+              <i data-lucide="sliders"></i>
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Surveillance Health Widget -->
+      <div class="sidebar-health-widget">
+        <div class="widget-head">
+          <span class="widget-label">FEED COVERAGE</span>
+          <span class="health-status-badge status-degraded" id="overall-health-badge">DEGRADED</span>
+        </div>
+        <div class="health-metrics">
+          <div class="health-pct-row">
+            <span>Verified Fresh:</span>
+            <strong id="sidebar-fresh-pct">50%</strong>
+          </div>
+          <div class="health-bar-track">
+            <div class="health-bar-fill" id="sidebar-progress-fill" style="width: 50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-footer-actions">
+          <button class="btn btn-outline btn-sm btn-block" id="toggle-ticker-btn" title="Pause or resume time aging">
+            <i data-lucide="pause" id="ticker-icon"></i>
+            <span id="ticker-text">Pause Aging</span>
+          </button>
+          <button class="btn btn-secondary btn-sm btn-block" id="reset-demo-sidebar-btn" title="Reset all demo states">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Reset Demo State</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Main Body Container -->
+      <main class="main-body" id="main-content">
+        <!-- Breadcrumbs Navigation Bar with Clock & Mobile Menu Toggle -->
+        <nav class="breadcrumb-bar" aria-label="Breadcrumbs">
+          <div class="breadcrumb-left">
+            <button class="mobile-menu-btn mobile-only" id="mobile-sidebar-open" aria-label="Open navigation menu">
+              <i data-lucide="menu"></i>
+            </button>
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item"><a href="index.html"><i data-lucide="home"></i> SmartSight</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Active Alerts</li>
+            </ol>
+          </div>
+          <div class="breadcrumb-right">
+            <div class="breadcrumb-clock" title="Local system clock">
+              <i data-lucide="clock"></i>
+              <span class="clock-time font-mono" id="live-clock">--:--:--</span>
+            </div>
+            <div class="breadcrumb-page-badge font-mono">SAFETY • ACTION MANDATES</div>
+          </div>
+        </nav>
+
+        <!-- Actionable Alerts Section -->
+        <section class="section-container alerts-section" id="alerts-section" aria-label="Actionable Safety Alerts">
+          <div class="section-header-bar">
+            <div class="section-title-wrap">
+              <div class="title-with-badge">
+                <h2 class="section-title">Current Actionable Feed Reliability Alerts</h2>
+                <span class="alert-count-badge" id="active-alert-badge">2 Unresolved</span>
+              </div>
+              <p class="section-desc">
+                High-priority notifications for stale, duplicate, or missing camera feeds requiring safety intervention.
+              </p>
+            </div>
+            
+            <a href="cameras.html" class="btn btn-outline btn-sm" title="Test scenarios in simulation lab">
+              <i data-lucide="flask-conical"></i>
+              <span>Simulation Lab</span>
+            </a>
+          </div>
+
+          <!-- Dynamic Alerts List Container -->
+          <div class="alerts-list" id="alerts-container">
+            <!-- Alert items rendered dynamically by app.js renderAlertsList() -->
+          </div>
+        </section>
+
+        <!-- Information Callout -->
+        <div class="notice-callout-strip">
+          <div class="notice-icon"><i data-lucide="info"></i></div>
+          <div class="notice-text">
+            <strong>Testing Alert Responses:</strong>
+            Use the <a href="cameras.html" style="color: var(--accent); font-weight:600;">Camera Monitoring</a> page to simulate feed delays, dropouts, frozen buffer replays, and recovery frames. Alerts automatically update and reflect the zero-trust evaluation.
+          </div>
+        </div>
+      </main>
+
+      <!-- Dashboard Footer -->
+      <footer class="app-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <strong>SmartSight Construction Safety Camera Reliability Monitor</strong>
+            <span class="footer-note">• Feed reliability monitoring prototype. Zero external image uploads.</span>
+          </div>
+          <div class="footer-right">
+            <span class="footer-tag">GREVIX AFTERCODE Challenge Card 2</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODAL: Camera Details Modal -->
+  <div class="modal-backdrop" id="camera-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-camera-title" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-tag font-mono" id="modal-camera-id">CAM-101</span>
+          <h3 class="modal-title" id="modal-camera-title">Camera Details</h3>
+        </div>
+        <button class="modal-close-btn" id="modal-close-btn" aria-label="Close modal">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-body-content">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-secondary-action">Close</button>
+        <div class="modal-actions-right" id="modal-primary-actions">
+          <!-- Dynamic action buttons -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Custom Confirmation Dialog -->
+  <div class="modal-backdrop" id="confirm-modal-backdrop" role="dialog" aria-modal="true" hidden>
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <h4 class="modal-title" id="confirm-modal-title">Confirm Action</h4>
+      </div>
+      <div class="modal-body" id="confirm-modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="confirm-cancel-btn">Cancel</button>
+        <button class="btn btn-danger" id="confirm-proceed-btn">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Application -->
+  <script src="app.js"></script>
+</body>
+</html>
